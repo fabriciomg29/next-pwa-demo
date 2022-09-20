@@ -1,8 +1,26 @@
+import React, { useEffect, useContext, useState } from 'react'
+import { useAddToHomescreenPrompt } from "../src/hooks/useAddToHomescreenPrompt"
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
+
+  const [showInstall, setShowInstall] = useState(false)
+  const [isVisibleState, setIsVisibleState] = useState(false)
+  const [prompt, promptToInstall] = useAddToHomescreenPrompt()
+
+  useEffect(() => {
+    setShowInstall(isVisibleState)
+  }, [isVisibleState])
+  
+  useEffect(() => {
+    if (prompt) {
+      setIsVisibleState(true)
+    }
+  }, [prompt])
+
+
   return (
     <div className={styles.container}>
       <Head>
@@ -46,9 +64,14 @@ export default function Home() {
           >
             <h2>Deploy &rarr;</h2>
             <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
+              Instantly deploy your Next.js site to a public URL with Vercel. 1
             </p>
           </a>
+
+          <div display={showInstall ? "block" : "none"}>
+            <button onClick={promptToInstall}>Add to homescreen</button>
+          </div>
+
         </div>
       </main>
 
